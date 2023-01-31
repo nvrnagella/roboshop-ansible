@@ -1,0 +1,30 @@
+#print_head "updating mongodb listening IP"
+#sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>>${LOG}
+#status_check
+#print_head "enabling mongodb "
+#systemctl enable mongod &>>${LOG}
+#status_check
+#print_head "restarting mongodb"
+#systemctl restart mongod &>>${LOG}
+#status_check
+- name: copy mongodb yum repo file
+  ansible.builtin.copy:
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongodb.repo
+
+- name: install mongoDB server
+  ansible.builtin.yum:
+    name: mongodb-org
+    state: installed
+
+- name: update mongodb listen address
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: start mongodb
+  ansible.builtin.systemd:
+    name: mongod
+    state: restarted
+    enabled: yes
