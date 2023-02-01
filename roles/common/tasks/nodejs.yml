@@ -20,7 +20,7 @@
     path: /app
     state: directory
 
-- name: download {{catalogue}} app content
+- name: download {{component}} app content
   ansible.builtin.unarchive:
     src: https://roboshop-artifacts.s3.amazonaws.com/{{component}}.zip
     dest: /app
@@ -33,12 +33,12 @@
 
 - name: copy systemd file
   ansible.builtin.copy:
-    src: "{{catalogue}}.service"
-    dest: /etc/systemd/system/{{catalogue}}.service
+    src: "{{component}}.service"
+    dest: /etc/systemd/system/{{component}}.service
 
-- name: start {{catalogue}} service
+- name: start {{component}} service
   ansible.builtin.systemd:
-    name: "{{catalogue}}"
+    name: "{{component}}"
     daemon_reload: yes
     enabled: yes
     state: restarted
