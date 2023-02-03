@@ -11,7 +11,7 @@
 
 - name: Download python dependencies
   ansible.builtin.pip:
-    requirements: /app/requirement.txt
+    requirements: /app/requirements.txt
     executable: pip3.6
 
 - name: systemd setup
